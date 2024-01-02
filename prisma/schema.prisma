@@ -15,11 +15,14 @@ datasource db {
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
+  hash      String
   name      String?
   role      Role
   entries   Entry[] // One-to-many relation: a user can have many entries
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("users")
 }
 
 enum Role {
@@ -37,6 +40,8 @@ model Entry {
   tags      Tag[] // Many-to-many relation: an entry can have many tags
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("entries")
 }
 
 enum Tag {

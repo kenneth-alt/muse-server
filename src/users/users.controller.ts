@@ -7,21 +7,18 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, Role } from '@prisma/client';
+import { JwtGuard } from 'src/auth/guard';
 
+@UseGuards(JwtGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
-  @Post()
-  create(@Body() createUserDto: Prisma.UserCreateInput) {
-    return this.usersService.create(createUserDto);
-  }
-
   @Get()
-  findAll(@Query('role') role?: 'ADMIN' | 'DEVELOPER' | 'INTERN') {
+  findAll(@Query('role') role?: Role) {
     return this.usersService.findAll(role);
   }
 
